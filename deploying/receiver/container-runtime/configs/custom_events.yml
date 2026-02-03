@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+version: 25.12
 custom_event_types:
   - event_uri: https://iam.ibm.com/secevent/ssf/event-type/application
     schema: |
