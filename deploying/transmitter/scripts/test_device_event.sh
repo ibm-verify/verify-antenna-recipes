@@ -29,6 +29,6 @@ echo $event
 
 # Modify the hostname if you aren't using the default transmitter hostname
 curl -k --request POST \
-    --url https://$TRANSMITTER_HOSTNAME:9042/sources/mdm/events \
+    --url https://$TRANSMITTER_HOSTNAME:9044/sources/mdm/events \
     --header 'Content-Type: application/json' \
     --data "$event"
