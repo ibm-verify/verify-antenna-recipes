@@ -18,7 +18,7 @@ spec:
       hostname: antenna-postgres
       containers:
         - name: antenna-postgres
-          image: postgres:18-alpine
+          image: postgres:17-alpine
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
@@ -96,7 +96,7 @@ spec:
       hostname: antenna-kafka
       containers:
         - name: antenna-kafka
-          image: confluentinc/cp-kafka:latest
+          image: confluentinc/cp-kafka:8.1.1
           imagePullPolicy: Always
           ports:
             - name: kafka-broker
