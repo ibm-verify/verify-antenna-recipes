@@ -1,5 +1,10 @@
 # IBM Verify Antenna Datastore on a Container Runtime
 
+> ⚠️
+> 
+> This is meant for demonstration and reference only. This is not meant for production use.
+>
+
 This guide provides step-by-step instructions for deploying the datastore components (PostgreSQL and Kafka) required for IBM Verify Antenna on a container runtime like Docker or Podman.
 
 ## Table of Contents
