@@ -37,7 +37,7 @@ This repository is intended to provide example recipes and configurations for IB
 
 To get started with IBM Verify Antenna:
 
-1. Review the [official documentation](https://www.ibm.com/docs/en/security-verify?topic=integrations-verify-antenna)
+1. Review the [official IBM documentation](https://www.ibm.com/docs/en/verify-antenna/26.03.0)
 2. Explore the example recipes in this repository
 3. Configure your Transmitter and Receiver based on your integration needs
 4. Deploy and test your configuration
