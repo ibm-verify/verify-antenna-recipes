@@ -15,6 +15,8 @@ spec:
       labels:
         app: antenna-postgres
     spec:
+      securityContext:
+        fsGroup: 70
       hostname: antenna-postgres
       containers:
         - name: antenna-postgres
