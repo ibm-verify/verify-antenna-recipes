@@ -52,6 +52,22 @@ Follow the instructions in [Container Runtime Deployment](../../../deploying/rec
 
 3. Set the `content` property for this event type to `"@js/session_revoked.js"`.
 
+### Update the Receiver Deployment File
+
+1. Open `antenna-receiver/receiver-deployment.yaml`.
+2. Find the configMap with `name: receiver-action-handlers`
+3. Add a new element under the "items" entry for `session_revoked.js` as:
+   ```
+   - configMap:
+       name: receiver-action-handlers
+       items:
+         - key: log_event.js
+           path: js/log_event.js
+         - key: session_revoked.js     # Added for caep-dev verify-receiver scenario
+           path: js/session_revoked.js # Added for caep-dev verify-receiver scenario
+   ```
+Note: If the receiver and/or Config Maps have already been deployed, make sure to delete and recreate them to reflect the changes.
+
 ### Complete the Receiver Setup
 
 Follow the remaining instructions in the [Container Runtime Deployment](../../../deploying/receiver/container-runtime/README.md) guide to complete the receiver configuration and deployment.
