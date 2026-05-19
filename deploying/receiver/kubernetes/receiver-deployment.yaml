@@ -17,7 +17,7 @@ spec:
       hostname: antenna-receiver
       containers:
         - name: antenna-receiver
-          image: icr.io/ibm-verify/ibm-verify-antenna-receiver:26.03.0
+          image: icr.io/ibm-verify/ibm-verify-antenna-receiver:26.03.1
           imagePullPolicy: Always
           ports:
             - containerPort: 9043
