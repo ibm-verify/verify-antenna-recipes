@@ -1,6 +1,6 @@
 services:
   antenna-transmitter:
-    image: "icr.io/ibm-verify/ibm-verify-antenna-transmitter:26.03.0"
+    image: "icr.io/ibm-verify/ibm-verify-antenna-transmitter:26.03.1"
     hostname: ${HOSTNAME}
     container_name: ${HOSTNAME}
     networks:
