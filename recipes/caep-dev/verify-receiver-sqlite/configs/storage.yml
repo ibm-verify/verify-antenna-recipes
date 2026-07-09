@@ -1,0 +1,32 @@
+version: 26.03
+
+keystores:
+  - name: server
+    type: pem
+    certificate:
+      - label: cert
+        content: "@keys/server.pem"
+    key:
+      - label: key
+        content: "@keys/server.key"
+
+server_connections:
+  - name: sqlite_config
+    type: sqlite
+    database_name: antenna_config
+    hosts:
+      - hostname: "file:///db/antenna_config.db?cache=shared"
+        hostport: 0
+  - name: sqlite_events
+    type: sqlite
+    database_name: antenna_events
+    hosts:
+      - hostname: "file:///db/antenna_events.db?cache=shared"
+        hostport: 0
+
+databases:
+  config:
+    server: sqlite_config
+  ssf_2_action:
+    server: sqlite_events
+    partitions: 1
