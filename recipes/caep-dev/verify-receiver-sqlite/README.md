@@ -78,37 +78,30 @@ volumes:
   - ./db:/db                 # Added for SQLite
 ```
 
-### Generate Keys and Certificates
+### Complete the Receiver Setup
 
-Follow the [Generating Keys and Certificates](../../../deploying/receiver/container-runtime/README.md#generating-keys-and-certificates) section of the Container Runtime Deployment guide.
+Follow the remaining instructions in the [Container Runtime Deployment](../../../deploying/receiver/container-runtime/README.md) guide to complete the receiver configuration and deployment. Stop after completing `Setting Up Environment Variables` and continue below.
 
-### Configure TLS for Transmitter Connections
-
-If the transmitter (caep.dev) uses a non-standard CA certificate, follow the [Configuring TLS for Transmitter Connections](../../../deploying/receiver/container-runtime/README.md#configuring-tls-for-transmitter-connections) section.
-
-> caep.dev uses a publicly trusted certificate - no custom CA bundle is required for this recipe.
-
-> Skip the `Copying Datastore Certificates and Secrets` section entirely - it applies only to the PostgreSQL/Kafka setup and is not needed here.
-
-### Set Up Environment Variables
-
-Follow the [Setting Up Environment Variables](../../../deploying/receiver/container-runtime/README.md#setting-up-environment-variables) section. Set `HOSTNAME` to your receiver's hostname.
+> [!IMPORTANT]
+> Skip the `Copying Datastore Certificates and Secrets` section
 
 ## Running the Receiver
 
-1. Create the shared container network (once):
+1. Ensure all certificates and configuration files are in place.
+
+2. Create the shared container network (once):
 
    ```bash
    docker network create antenna-network
    ```
 
-2. Start the receiver:
+3. Start the receiver with Docker Compose:
 
    ```bash
    docker-compose up -d
    ```
 
-3. Wait for the partitioner to be ready (~60 seconds). Check the logs:
+4. Wait for the partitioner to be ready (~60 seconds). Check the logs:
 
    ```bash
    docker-compose logs antenna-receiver -f
@@ -120,6 +113,10 @@ Follow the [Setting Up Environment Variables](../../../deploying/receiver/contai
    ```
 
    > The repeated `cannot get partition IDs error=partitioner not ready` messages before this line are **normal startup behavior** - they stop after ~60 seconds. Do not register the stream before this point.
+
+## Verifying Receiver Deployment
+
+Follow the remaining instructions in the [Container Runtime Deployment](../../../deploying/receiver/container-runtime/README.md) guide to verify the receiver deployment.
 
 ## Registering with CAEP.Dev
 
