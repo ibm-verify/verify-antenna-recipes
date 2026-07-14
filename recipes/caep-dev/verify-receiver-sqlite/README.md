@@ -116,7 +116,7 @@ Follow the remaining instructions in the [Container Runtime Deployment](../../..
 
 ## Verifying Receiver Deployment
 
-Follow the remaining instructions in the [Container Runtime Deployment](../../../deploying/receiver/container-runtime/README.md) guide to verify the receiver deployment.
+Follow the remaining instructions in the [Container Runtime Deployment](../../../deploying/receiver/container-runtime/README.md#verifying-receiver-deployment) guide to verify the receiver deployment.
 
 ## Registering with CAEP.Dev
 
