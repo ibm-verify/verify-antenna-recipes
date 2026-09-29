@@ -20,7 +20,7 @@ Verify Antenna allows organizations to:
 
 ## Documentation
 
-For comprehensive documentation on IBM Verify Antenna, please visit the [official IBM documentation](https://www.ibm.com/docs/en/verify-antenna/26.03.0).
+For comprehensive documentation on IBM Verify Antenna, please visit the [official IBM documentation](https://www.ibm.com/docs/en/verify-antenna/26.09.0).
 
 ## Repository Structure
 
@@ -37,7 +37,7 @@ This repository is intended to provide example recipes and configurations for IB
 
 To get started with IBM Verify Antenna:
 
-1. Review the [official IBM documentation](https://www.ibm.com/docs/en/verify-antenna/26.03.0)
+1. Review the [official IBM documentation](https://www.ibm.com/docs/en/verify-antenna/26.09.0)
 2. Explore the example recipes in this repository
 3. Configure your Transmitter and Receiver based on your integration needs
 4. Deploy and test your configuration

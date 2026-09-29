@@ -1,8 +1,11 @@
 ---
-version: 26.03
+version: 26.09
 
 logging:
   level: info
+
+auditing:
+  enabled: true
 
 transmitter:
   server:
@@ -16,6 +19,9 @@ transmitter:
     - "https://schemas.openid.net/secevent/caep/event-type/session-revoked"
     - "https://schemas.openid.net/secevent/caep/event-type/device-compliance-change"
     - "https://iam.ibm.com/secevent/ssf/event-type/application"
+
+  preserve_headers: 
+    - "X-Correlation-Id"
 
   runtime:
     enabled: true

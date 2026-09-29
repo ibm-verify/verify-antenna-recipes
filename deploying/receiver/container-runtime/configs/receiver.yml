@@ -1,7 +1,10 @@
 ---
-version: 26.03
+version: 26.09
 logging:
   level: info
+
+auditing:
+  enabled: true
 
 receiver:
   server: # HTTP server.
@@ -10,7 +13,13 @@ receiver:
       certificate: "ks:server/cert"
   base_url: "https://receiver.dune.com:9043"
 
+  preserve_headers: 
+    - "X-Correlation-Id"
+
   management:
+    enabled: true
+
+  auditing:
     enabled: true
 
   runtime:
