@@ -1,0 +1,101 @@
+{
+    "model": [
+        {
+            "id": "node-1-Start",
+            "name": "Start",
+            "next": {
+                "node": "node-2-ModifyApplicationStatus",
+                "connectionWayPoints": [
+                    {
+                        "x": 234.54998779296875,
+                        "y": 88
+                    },
+                    {
+                        "x": 234.54998779296875,
+                        "y": 135.27499389648438
+                    }
+                ]
+            },
+            "position": {
+                "x": 171.54998779296875,
+                "y": 48
+            },
+            "taskType": "Start"
+        },
+        {
+            "id": "node-2-ModifyApplicationStatus",
+            "name": "Modify application status",
+            "next": {
+                "node": "node-4-DeleteOAuthGrant",
+                "connectionWayPoints": [
+                    {
+                        "x": 234.54998779296875,
+                        "y": 211.27499389648438
+                    },
+                    {
+                        "x": 234.54998779296875,
+                        "y": 252.1374969482422
+                    }
+                ]
+            },
+            "input": {
+                "status": "disabled",
+                "applicationId": "@context.subject.sub_id.application.id@"
+            },
+            "output": [
+                "applicationState"
+            ],
+            "position": {
+                "x": 140.54998779296875,
+                "y": 135.27499389648438
+            },
+            "taskType": "ModifyApplicationStatus"
+        },
+        {
+            "id": "node-3-End",
+            "name": "End",
+            "position": {
+                "x": 171.54998779296875,
+                "y": 360.2749938964844
+            },
+            "taskType": "End"
+        },
+        {
+            "id": "node-4-DeleteOAuthGrant",
+            "name": "Delete OAuth grant",
+            "next": {
+                "node": "node-3-End",
+                "connectionWayPoints": [
+                    {
+                        "x": 234.54998779296875,
+                        "y": 328.1374969482422
+                    },
+                    {
+                        "x": 234.54998779296875,
+                        "y": 348.1374969482422
+                    },
+                    {
+                        "x": 234.54998779296875,
+                        "y": 340.2749938964844
+                    },
+                    {
+                        "x": 234.54998779296875,
+                        "y": 360.2749938964844
+                    }
+                ]
+            },
+            "input": {
+                "userId": "@context.subject.sub_id.user.id@",
+                "grantId": "",
+                "sessionId": ""
+            },
+            "position": {
+                "x": 140.54998779296875,
+                "y": 252.1374969482422
+            },
+            "taskType": "DeleteOAuthGrant"
+        }
+    ],
+    "reference": "sessionrevokedresponse",
+    "propertiesSchemaVersion": 5.2
+}
