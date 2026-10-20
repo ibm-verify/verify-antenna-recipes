@@ -1,0 +1,82 @@
+version: "26.03"
+
+custom_event_types:
+  - event_uri: "urn:ietf:params:scim:event:prov:patch:full"
+    schema: |
+      {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "schemas",
+              "Operations"
+            ],
+            "properties": {
+              "schemas": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 1
+              },
+              "Operations": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "op",
+                    "path",
+                    "value"
+                  ],
+                  "properties": {
+                    "op": {
+                      "enum": [
+                        "replace"
+                      ]
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "value": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  - event_uri: "urn:ietf:params:scim:event:prov:create:full"
+    schema: |
+      {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "schemas"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "schemas": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }

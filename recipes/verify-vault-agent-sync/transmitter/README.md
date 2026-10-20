@@ -1,213 +1,83 @@
-# IBM Verify Application-to-Agent Transmitter Recipe
+# IBM Agent Identity Transmitter Recipe
 
-This recipe demonstrates how to configure and deploy IBM Verify Antenna as a transmitter for IBM Verify application lifecycle events that represent agent identity changes. The transmitter processes IBM Verify application management audit events, evaluates whether the application is classified as an agent, and transforms the event into a standardized SSF event whose payload contains a SCIM-style `Agent` resource.
+This recipe configures an existing IBM Verify Antenna transmitter to convert IBM Agent Identity management notifications into provisioning events for the [Vault receiver](../vault-receiver/README.md).
 
 ## Overview
 
-IBM Verify applications may be used to represent AI agents or automation clients. In this recipe, an application is treated as an agent when its application metadata contains `companyName=agent`.
+The transmitter receives successful agent creation and modification notifications from Verify. It converts modifications into SCIM patch operations and delivers signed Security Event Tokens (SETs) through an SSF stream.
 
-This recipe configures IBM Verify Antenna to:
-
-1. Receive raw IBM Verify application management events.
-2. Read the current application state from IBM Verify when the audit payload does not contain the full classification metadata.
-3. Transform the event into an SSF event using the CAEP `session-revoked` event URI as the accepted carrier event type.
-4. Emit a payload that contains a minimal SCIM-style Agent resource instead of a Verify application-shaped payload.
-5. Transmit the resulting event to registered receivers.
+The supplied mapper explicitly sets `var subjectFormat = "opaque";` and emits an opaque subject containing the stable Verify Agent ID. The receiver script explicitly expects the same mode. The SCIM event URI and PatchOp payload are retained, but the opaque subject is a compatibility exception to RFC 9967. The tested Antenna 26.03.0 receiver rejected `scim` subjects.
 
 ## Prerequisites
 
-- IBM Verify tenant.
-- IBM Verify Antenna transmitter deployment.
-- IBM Verify API client with permission to read application configuration.
-- Container runtime or Kubernetes deployment using the standard IBM Verify Antenna setup.
-- A receiver configured to subscribe to the CAEP `session-revoked` event URI.
+- An existing Antenna transmitter with working storage, HTTPS listener, SET signing keys and public discovery URL.
+- Verify tenant with IBM Agent Identity and management notification access.
+- Verify API client permitted to read agents; required when constructing a creation event.
+- A configured notification route from Verify to this transmitter.
 
-## Deployment Options
+## Configuration
 
-You can deploy this transmitter recipe using the standard IBM Verify Antenna deployment method.
+1. Copy [custom_events.yml](configs/custom_events.yml) into the transmitter configuration directory beside `transmitter.yml`. Keep its `version: "26.03"` header.
+2. Edit the configuration constants near the top of [verify_agent_registry_mapper.js](configs/js/verify_agent_registry_mapper.js):
 
-### Option 1: Container Runtime
+| Constant | Set to |
+|---|---|
+| tenantHost | Verify hostname without https:// |
+| clientId / clientSecret | Verify API client permitted to read agents |
+| agentApiPath | Agent endpoint verified for your tenant; default /v1.0/Agents |
+| subjectFormat | Keep opaque |
 
-Follow the standard container runtime deployment instructions for the IBM Verify Antenna transmitter, with the following recipe-specific modifications.
+3. Copy the edited handler into the existing transmitter's configs/js directory and copy the supplied custom_events.yml beside transmitter.yml. There is no environment file or rendering step.
 
-1. Copy the `verify_app_agent_mapper.js` transformation handler from this recipe into your transmitter configuration directory:
+If that filename already holds other custom definitions, merge these entries into the existing top-level `custom_event_types` list instead of replacing them. Preserve unrelated service configuration.
 
-   ```bash
-   cp recipes/verify-vault-agent-sync/transmitter/configs/js/verify_app_agent_mapper.js \
-      antenna-transmitter/configs/js/verify_app_agent_mapper.js
-   ```
+4. Add these values to `transmitter.event_types`:
 
-2. Modify `transmitter.yml` to include the event type used by this recipe:
+```yaml
+- "urn:ietf:params:scim:event:prov:create:full"
+- "urn:ietf:params:scim:event:prov:patch:full"
+```
 
-   ```yaml
-   transmitter:
-     event_types:
-       - "https://schemas.openid.net/secevent/caep/event-type/session-revoked"
-   ```
+5. Add the source under `transmitter.ingester.sources` (or update your existing source of the same ID):
 
-3. Configure the IBM Verify webhook source to use the mapper:
+```yaml
+- id: push_src_1
+  type: http_push
+  transform_rule:
+    type: javascript
+    content: "@js/verify_agent_registry_mapper.js"
+```
 
-   ```yaml
-   transmitter:
-     ingester:
-       sources:
-         - id: verify_app_audit
-           type: http_push
-           transform_rule:
-             type: javascript
-             content: "@js/verify_app_agent_mapper.js"
-   ```
+6. Reload/restart the existing transmitter using its deployment procedure. Check startup logs for successful custom-event validation and processing readiness. Keep its existing signing keys, storage and stream authorization.
 
-4. Configure the mapper with the IBM Verify tenant and API client details required to read the current application state when needed.
+For an existing Kubernetes deployment, mount the handler and custom-event YAML in the configured paths through the deployment's ConfigMaps/secret-rendering process, then roll out the change. This recipe does not supply a base deployment.
 
-### Option 2: Kubernetes
+## Configure Verify notifications
 
-Follow the standard Kubernetes deployment instructions for IBM Verify Antenna, with the same recipe-specific changes:
+In Verify's notification webhook configuration, select successful agent management creation/modification notifications and set the destination to:
 
-1. Add `verify_app_agent_mapper.js` to the transmitter transform handler ConfigMap.
-2. Mount the mapper under the transmitter `configs/js` path.
-3. Add the CAEP `session-revoked` event type to the transmitter event type configuration.
-4. Configure the Verify application audit source to use `@js/verify_app_agent_mapper.js`.
+```text
+https://<your-transmitter-public-host>/sources/push_src_1/events
+```
 
-## Explaining the Internals
+Send JSON (`Content-Type: application/json`) and configure authentication to match the existing ingress. Event-selection labels depend on the tenant UI. The modification mapper requires `event_type=management`, `data.resource=ai_agent`, `data.action=modified`, and `data.result=success`. A connection-test payload alone does not create a Vault identity.
 
-### Agent Event Mapper
+## Explaining the internals
 
-The `verify_app_agent_mapper.js` file contains the transformation logic for IBM Verify application lifecycle events.
+`data.modified` may be a JSON string containing attribute-keyed change objects. The mapper parses it and converts each change into `op:replace`, `path:<attribute>`, `value:<new value>`. The patch's `data.schemas` contains only `urn:ietf:params:scim:api:messages:2.0:PatchOp`.
 
-The mapper performs the following work:
-
-1. Reads the incoming IBM Verify application audit event.
-2. Extracts the application ID and application name.
-3. Checks whether the application is classified as an agent using `companyName=agent`.
-4. If the audit event does not contain the current classification value, calls the IBM Verify application API to read the current state.
-5. Generates an SSF event with the accepted CAEP carrier URI:
-
-   ```text
-   https://schemas.openid.net/secevent/caep/event-type/session-revoked
-   ```
-
-6. Places a SCIM-style `Agent` resource inside the event body:
-
-   ```json
-   {
-     "operation": "upsert",
-     "resource": {
-       "resourceType": "Agent",
-       "id": "255028952879348172",
-       "name": "OpenID Connect_scim_format",
-       "schemas": [
-         "urn:ietf:params:scim:schemas:extension:ibm:2.0:Agent"
-       ]
-     }
-   }
-   ```
-
-### Why the Payload Uses Agent Instead of Application
-
-The source event today is an IBM Verify application audit event, but the receiver should not be coupled to a Verify application-shaped payload. The receiver only needs to know the agent identity that must be synchronized to Vault.
-
-For that reason, the mapper converts the application audit input into a minimal Agent resource. If a future IBM Verify Agent Registry or agent audit event source emits agent lifecycle events directly, the receiver contract can remain unchanged.
-
-### Event URI Note
-
-The lab uses the CAEP `session-revoked` event URI because it is accepted by the validated Antenna stream registration flow. The event URI is used as the SSF carrier. The business meaning is carried by the embedded payload:
-
-- `operation=upsert` means create or update the Vault identity alias.
-- `operation=delete` means disable or remove the Vault identity alias.
-- `resource.resourceType=Agent` identifies the payload as an Agent resource.
+Supported attributes are displayName, description, externalIds, owners, tags, status and oauthClients. Arrays and empty arrays are preserved. Creation events retrieve the complete current agent from Verify. Subject ID comes from the agent resource ID; transaction ID comes from source txn or audit ID.
 
 ## Testing
 
-Use the provided test scripts to verify the transmitter mapper behavior.
-
-### Test Agent Upsert Event
-
-`test_agent_upsert_event.sh` simulates a Verify application event where the application is classified as an agent.
-
-```bash
-./scripts/test_agent_upsert_event.sh
-```
-
-Expected result:
-
-- The transmitter receives the raw event.
-- The mapper logs `SCIM AGENT PAYLOAD`.
-- The mapper emits an SSF event containing `resourceType=Agent` and `operation=upsert`.
-
-### Test Agent Delete Event
-
-`test_agent_delete_event.sh` simulates a Verify application event where the agent classification has been removed or is not present.
-
-```bash
-./scripts/test_agent_delete_event.sh
-```
-
-Expected result:
-
-- The transmitter receives the raw event.
-- The mapper emits an SSF event containing `resourceType=Agent` and `operation=delete` or disable semantics.
-
-## Verification
-
-After running the test scripts or triggering a real Verify application change, verify the transmitter logs.
-
-Look for:
-
-```text
-verify_app_agent_mapper.js SCIM AGENT PAYLOAD
-Generated SCIM Agent event
-```
-
-and confirm the emitted event contains:
-
-```json
-"resource": {
-  "id": "<agent-id>",
-  "name": "<agent-name>",
-  "resourceType": "Agent"
-}
-```
-
-Also confirm the transmitter reports that the event is requested by a registered stream:
-
-```text
-Event https://schemas.openid.net/secevent/caep/event-type/session-revoked ... is requested by the following streams
-```
-
-## Customization
-
-You can customize this recipe by:
-
-1. Changing the classification attribute from `companyName` to another Verify application attribute.
-2. Adding additional Agent attributes if required by the downstream receiver.
-3. Replacing the application audit source with a future Agent Registry audit source while preserving the same SCIM Agent event payload.
-
-Keep the receiver contract stable by preserving this minimum resource shape:
-
-```json
-{
-  "resource": {
-    "resourceType": "Agent",
-    "id": "<agent-id>",
-    "name": "<agent-name>"
-  }
-}
-```
+1. Complete the paired receiver recipe and stream registration.
+2. Change the description of a dedicated ACTIVE agent in Verify.
+3. Confirm webhook receipt, transformation and SET delivery in transmitter logs.
+4. Confirm the expected Vault state using the receiver's verification commands.
 
 ## Troubleshooting
 
-- Check transmitter logs for mapper execution errors.
-- Verify that the IBM Verify API client can read the current application configuration.
-- Confirm the application contains `companyName=agent` when testing upsert.
-- Confirm the stream is subscribed to `https://schemas.openid.net/secevent/caep/event-type/session-revoked`.
-- If stream creation fails with `invalid event URI`, use the validated CAEP `session-revoked` carrier URI for this recipe.
-
-## Next Steps
-
-After the transmitter successfully emits Agent SCIM-shaped events:
-
-1. Configure the Vault receiver recipe to subscribe to the same event type.
-2. Add the Vault action handler that reads `resource.resourceType`, `resource.id`, and `resource.name`.
-3. Trigger a real IBM Verify application create or modify event.
-4. Validate that the Vault entity and entity alias are created or updated.
+- Unsupported event URI or empty configuration version: check the supplied custom-event YAML is loaded with its version header.
+- Transformation failure: check the real audit fields and `data.modified` structure.
+- No delivery: check discovery, authorization and the stream's requested event types.
+- UI-only OAuth association changes may not emit an agent-modified event. A subsequent status change can include OAuth changes; this recipe does not add a missing notification source or periodic reconciliation.
