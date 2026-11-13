@@ -1,14 +1,12 @@
-// CONFIGURATION: edit the placeholder values below before deployment.
-// Subject mode is explicitly opaque in BOTH handlers; no renderer/environment file is required.
 importClass(logger);
 importClass(http);
 var outputData = {ssfEvents: []};
 var inputData = JSON.parse(eventStr);
-var tenantHost = "<Verify-tenant-hostname>";
-var clientId = "<Verify-read-client-ID>";
-var clientSecret = "<Verify-read-client-secret>";
-var agentApiPath = "/v1.0/Agents";
-var subjectFormat = "opaque";
+var tenantHost = "${VERIFY_TENANT_HOST}";
+var clientId = "${VERIFY_CLIENT_ID}";
+var clientSecret = "${VERIFY_CLIENT_SECRET}";
+var agentApiPath = "${VERIFY_AGENT_API_PATH}";
+var subjectFormat = "${SUBJECT_FORMAT}";
 if (subjectFormat !== "scim" && subjectFormat !== "opaque") throw "Invalid SUBJECT_FORMAT";
 var PATCH = "urn:ietf:params:scim:event:prov:patch:full";
 var CREATE = "urn:ietf:params:scim:event:prov:create:full";

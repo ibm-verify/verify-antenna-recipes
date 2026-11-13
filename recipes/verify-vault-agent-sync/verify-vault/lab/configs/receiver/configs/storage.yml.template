@@ -1,0 +1,32 @@
+---
+version: 26.03
+
+keystores:
+  - name: server
+    type: pem
+    certificate:
+      - label: cert
+        content: "@keys/server.pem"
+    key:
+      - label: key
+        content: "@keys/server.key"
+
+server_connections:
+  - name: sqlitefile
+    type: sqlite
+    database_name: antenna
+    hosts:
+      - hostname: "file:///db/receiver.db?cache=shared"
+        hostport: 0
+
+databases:
+  config:
+    server: sqlitefile
+  ssf_2_action:
+    server: sqlitefile
+    partitions: 1
+
+javascript:
+  timeout: 30
+  max_concurrent_jobs: 16
+  max_ctx_pre_isolate: 50

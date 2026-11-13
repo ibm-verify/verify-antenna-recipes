@@ -1,0 +1,31 @@
+---
+version: 26.03
+
+logging:
+  level: debug
+
+receiver:
+  server:
+    ssl:
+      key: "ks:server/key"
+      certificate: "ks:server/cert"
+  base_url: "https://${HOST_IP}:${RX_PORT}"
+  event_types:
+    - "urn:ietf:params:scim:event:prov:patch:full"
+    - "urn:ietf:params:scim:event:prov:create:full"
+  management:
+    enabled: true
+  runtime:
+    enabled: true
+    worker_threads: 1
+    cleaner_interval_in_secs: 60
+    event_states_to_clean:
+      - "actioned"
+      - "errored"
+    action_rules:
+      - event_type: "urn:ietf:params:scim:event:prov:create:full"
+        type: javascript
+        content: "@js/vault_agent_registry_action.js"
+      - event_type: "urn:ietf:params:scim:event:prov:patch:full"
+        type: javascript
+        content: "@js/vault_agent_registry_action.js"

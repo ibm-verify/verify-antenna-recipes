@@ -1,0 +1,42 @@
+---
+version: 26.03
+
+keystores:
+  - name: server
+    type: pem
+    certificate:
+      - label: cert
+        content: "@keys/server.pem"
+    key:
+      - label: key
+        content: "@keys/server.key"
+
+  - name: jwks_keys
+    type: pem
+    certificate:
+      - label: jwtsigner
+        content: "@keys/jwtsigner.pem"
+    key:
+      - label: jwtsigner
+        content: "@keys/jwtsigner.key"
+
+server_connections:
+  - name: sqlitefile
+    type: sqlite
+    database_name: antenna
+    hosts:
+      - hostname: "file:///db/transmitter.db?cache=shared"
+        hostport: 0
+
+databases:
+  config:
+    server: sqlitefile
+  raw_2_ssf:
+    server: sqlitefile
+    partitions: 1
+  ssf_2_set:
+    server: sqlitefile
+    partitions: 1
+  poll_stage:
+    server: sqlitefile
+    retention_time_in_days: 4

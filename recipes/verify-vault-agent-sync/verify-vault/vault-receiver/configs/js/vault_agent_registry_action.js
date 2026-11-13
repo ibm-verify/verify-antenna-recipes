@@ -1,5 +1,3 @@
-// CONFIGURATION: edit the placeholder values below before deployment.
-// Subject mode is explicitly opaque in BOTH handlers; no renderer/environment file is required.
 importClass(logger);
 importClass(http);
 
@@ -9,19 +7,10 @@ logger.info("----- vault_agent_registry_action.js IBM VERIFY AGENT -> VAULT AGEN
 var wrapper = JSON.parse(eventStr);
 var claims = wrapper.claimsJson ? wrapper.claimsJson : wrapper;
 
-var vaultAddr = "https://<Vault-host>:8200";
-var vaultToken = "<Vault-provisioning-token>";
-var vaultPolicy = "<existing-ceiling-policy>";
-var mountAccessor = "<actual-OAuth-profile-accessor>";
-var ceilingField = "ceiling_policies";
-var vaultNamespace = "";
-
-
-
-var tenantHost = "<Verify-tenant-hostname>";
-var clientId = "<Verify-read-client-ID>";
-var clientSecret = "<Verify-read-client-secret>";
-var agentApiPath = "/v1.0/Agents";
+var tenantHost = "${VERIFY_TENANT_HOST}";
+var clientId = "${VERIFY_CLIENT_ID}";
+var clientSecret = "${VERIFY_CLIENT_SECRET}";
+var agentApiPath = "${VERIFY_AGENT_API_PATH}";
 function statusCode(status) {
   var m = String(status || "").match(/[0-9]+/);
   return m ? parseInt(m[0], 10) : 0;
@@ -71,7 +60,7 @@ function readAgent(agentId) {
   return JSON.parse(res.body);
 }
 
-var subjectFormat = "opaque";
+var subjectFormat = "${SUBJECT_FORMAT}";
 if (subjectFormat !== "scim" && subjectFormat !== "opaque") throw "Invalid SUBJECT_FORMAT";
 var PATCH = "urn:ietf:params:scim:event:prov:patch:full";
 var CREATE = "urn:ietf:params:scim:event:prov:create:full";
@@ -100,6 +89,9 @@ if (incoming) {
   if (validStates.indexOf(current.status) < 0) throw "Unknown/missing agent status; refusing Vault changes";
   var associations = current.oauthClients || [];
   if (!Array.isArray(associations)) throw "Invalid oauthClients response";
+  if (current.status === "ACTIVE" && associations.some(function(c) {
+    return !c || typeof c !== "object" || !c.clientId || !Array.isArray(c.purposes);
+  })) throw "Association purpose unavailable; refusing Vault changes. Require purpose=agent_id from authoritative Verify GET";
   var eligible = associations.filter(function(c) {
     return c && typeof c === "object" && c.clientId && Array.isArray(c.purposes) && c.purposes.indexOf("agent_id") >= 0;
   }).map(function(c) { return String(c.clientId); });
@@ -107,15 +99,11 @@ if (incoming) {
   logger.info("Eligibility status=" + current.status + " agent_id_clients=" + eligible.length);
   current.resourceType = "Agent";
   current.agentIdClientIds = eligible;
-  if (current.status === "ACTIVE" && eligible.length === 0) {
-    logger.info("SKIP ACTIVE agent: no explicit agent_id-purpose client; no Vault writes");
-  } else {
-    evt = {resource:current, operation: current.status === "ACTIVE" ? "upsert" : "delete"};
-  }
+  evt = {resource:current, operation: current.status === "ACTIVE" && eligible.length === 1 ? "upsert" : "delete"};
 }
 
 if (!evt) {
-  logger.info("No applicable action: unsupported event or ineligible ACTIVE agent. Skipping.");
+  logger.info("No supported event found. Skipping.");
 } else {
   var resource = evt.resource || evt.agent || {};
   var resourceType = String(resource.resourceType || (resource.meta && resource.meta.resourceType) || "Agent");
@@ -128,6 +116,17 @@ if (!evt) {
   } else if (!agentId) {
     logger.info("Skipping event because IBM Verify Agent id is missing.");
   } else {
+    var vaultAddr = "${VAULT_ADDR_FROM_ANTENNA}";
+    var vaultToken = "${VAULT_TOKEN}";
+    var vaultPolicy = "${VAULT_POLICY}";
+    var mountAccessor = "${VAULT_MOUNT_ACCESSOR}";
+    var ceilingField = "${VAULT_AGENT_REGISTRY_CEILING_FIELD}";
+    var vaultNamespace = "${VAULT_NAMESPACE}";
+
+    if (!vaultAddr || vaultAddr.indexOf("${") === 0) vaultAddr = "${VAULT_ADDR}";
+    if (!ceilingField || ceilingField.indexOf("${") === 0) ceilingField = "ceiling_policies";
+    if (!vaultNamespace || vaultNamespace.indexOf("${") === 0) vaultNamespace = "";
+
     function safeName(v) {
       return String(v || "").replace(/[^a-zA-Z0-9._-]/g, "-");
     }
