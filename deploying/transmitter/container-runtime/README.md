@@ -169,7 +169,7 @@ The transmitter needs access to the datastore certificates and credentials creat
 
 1. Ensure all certificates and configuration files are in place.
 
-2. Ensure the datastore is running and the `antenna-network` Docker network exists. If the datastore is not yet deployed, follow the [Datastore Deployment Guide](../datastore/container-runtime/README.md) first.
+2. Ensure the datastore is running and the `antenna-network` Docker network exists. If the datastore is not yet deployed, follow the [Datastore Deployment Guide](../../datastore/container-runtime/README.md) first.
 
 3. Start the transmitter with Docker Compose:
 
