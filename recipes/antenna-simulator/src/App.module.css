@@ -1,0 +1,31 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 48px;
+  max-width: 1480px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0;
+}
+
+.controlRow {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 0;
+  margin: 16px 24px;
+  min-height: 280px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .controlRow {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+}
