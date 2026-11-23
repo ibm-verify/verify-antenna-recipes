@@ -10,7 +10,7 @@ describe('sendVipEvent', () => {
     const mockFetch = vi.fn().mockResolvedValue({ ok: true, status: 201 })
     vi.stubGlobal('fetch', mockFetch)
 
-    const payload = { issue_type: 'Compromised User', issue_keys: { identity_name: 'alice@ibm.com' } }
+    const payload = { issue_type: 'Compromised User', issue_keys: { identity_id: '8120028SFS' } }
     await sendVipEvent(payload)
 
     expect(mockFetch).toHaveBeenCalledWith(

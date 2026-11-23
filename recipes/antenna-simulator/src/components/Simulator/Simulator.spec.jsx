@@ -34,7 +34,7 @@ describe('Simulator', () => {
 
   it('pre-fills User ID with default value', () => {
     renderSimulator()
-    expect(screen.getByLabelText(/user id/i)).toHaveValue('user@example.com')
+    expect(screen.getByLabelText(/user id/i)).toHaveValue('8120028SFS')
   })
 
   it('pre-fills Agent ID with default value on geo-anomaly scenario', async () => {
@@ -70,14 +70,14 @@ describe('Simulator', () => {
     renderSimulator({ onSend })
 
     await user.clear(screen.getByLabelText(/user id/i))
-    await user.type(screen.getByLabelText(/user id/i), 'bob@ibm.com')
+    await user.type(screen.getByLabelText(/user id/i), '8120031ABC')
 
     await user.click(screen.getByRole('button', { name: /send.*credential compromised/i }))
 
     expect(onSend).toHaveBeenCalledOnce()
     const [kind, fields, eventId] = onSend.mock.calls[0]
     expect(kind).toBe('credential-compromised')
-    expect(fields.userId).toBe('bob@ibm.com')
+    expect(fields.userId).toBe('8120031ABC')
     expect(eventId).toBe('Compromised User')
   })
 

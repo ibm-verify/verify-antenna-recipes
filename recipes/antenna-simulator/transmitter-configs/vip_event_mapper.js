@@ -40,8 +40,7 @@
 //      "issue_keys": {
 //        "authmind_agent_id": "am-agent-7f3c1d",
 //        "agent_external_id": "spiffe://dune.spire.local/trade-agent-alpha",
-//        "identity_id": "8120028SFS",
-//        "identity_name": "user@example.com"
+//        "identity_id": "8120028SFS"
 //      },
 //      "issue_time": "2026-10-15T11:15:37Z",
 //      "issue_type": "Unregistered Agent Detected",
@@ -63,7 +62,6 @@
 //      "issue_keys": {
 //        "agent_id": "am-agent-7f3c1d",
 //        "identity_id": "8120028SFS",
-//        "identity_name": "user@example.com",
 //        "asset_type": "database",
 //        "asset_id": "prod-db-01",
 //        "ip_address": "192.168.55.21"
@@ -82,8 +80,7 @@
 //      "issue_keys": {
 //        "agent_id": "01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b",
 //        "agent_external_id": "spiffe://dune.spire.local/trade-agent-alpha",
-//        "identity_id": "8120028SFS",
-//        "identity_name": "alice@example.com"
+//        "identity_id": "8120028SFS"
 //      },
 //      "issue_time": "2026-10-15T11:16:00Z",
 //      "issue_type": "Agent Invalid Owner",

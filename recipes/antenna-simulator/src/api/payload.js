@@ -4,16 +4,16 @@ let _seq = 0
 
 /**
  * Build a VIP raw event payload to POST to the transmitter.
- * Only includes identity_name / agent_id if non-empty.
+ * Only includes identity_id / agent_id if non-empty.
  *
- * @param {string} userId    - user email / identity
+ * @param {string} userId    - opaque IBM Verify user ID
  * @param {string} agentId   - opaque agent UUID
  * @param {string} issueType - one of ISSUE_TYPES values
  * @returns {object} VIP event payload
  */
 export function buildVipPayload(userId, agentId, issueType = ISSUE_TYPES.COMPROMISED_USER) {
   const issueKeys = {}
-  if (userId)  issueKeys.identity_name = userId
+  if (userId)  issueKeys.identity_id   = userId
   if (agentId) issueKeys.agent_id      = agentId
 
   const message = issueType === ISSUE_TYPES.UNAUTHORIZED_COUNTRY_ACCESS

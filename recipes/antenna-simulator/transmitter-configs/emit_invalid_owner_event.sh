@@ -7,11 +7,11 @@
 #                urn:ibm:agent:invalid_owner
 #
 # Usage:
-#   ./emit_invalid_owner_event.sh [TRANSMITTER_URL] [AGENT_ID] [PREV_OWNER_ID] [PREV_OWNER_NAME] [SPIFFE_ID]
+#   ./emit_invalid_owner_event.sh [TRANSMITTER_URL] [AGENT_ID] [PREV_OWNER_ID] [SPIFFE_ID]
 #
 # Examples:
 #   ./emit_invalid_owner_event.sh
-#   ./emit_invalid_owner_event.sh https://localhost:9044 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b 8120028SFS alice@example.com spiffe://dune.spire.local/trade-agent-alpha
+#   ./emit_invalid_owner_event.sh https://localhost:9044 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b 8120028SFS spiffe://dune.spire.local/trade-agent-alpha
 #
 # The event is a signal only — no new owner is carried. The replacement owner
 # is pre-configured in the IBM Verify playbook.
@@ -21,7 +21,7 @@
 #   Previous owner : @context.event.event_data.previous_owner@
 #   Reason         : @context.event.event_data.reason_admin.en@
 #
-# Variant — omit PREV_OWNER_ID/PREV_OWNER_NAME to emit a "no owner ever set" event:
+# Variant — omit PREV_OWNER_ID to emit a "no owner ever set" event:
 #   ./emit_invalid_owner_event.sh https://localhost:9044 c3f91b2a-dd47-4e10-b8ca-99f21ad30c77
 # ==============================================================================
 
@@ -30,17 +30,12 @@ set -euo pipefail
 TRANSMITTER_URL="${1:-https://localhost:9044}"
 AGENT_ID="${2:-01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b}"
 PREV_OWNER_ID="${3:-}"
-PREV_OWNER_NAME="${4:-}"
-SPIFFE_ID="${5:-spiffe://dune.spire.local/trade-agent-alpha}"
+SPIFFE_ID="${4:-spiffe://dune.spire.local/trade-agent-alpha}"
 ISSUE_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 # Build optional fields only when a previous owner is provided.
 if [ -n "${PREV_OWNER_ID}" ]; then
-    IDENTITY_KEYS="\"identity_id\": \"${PREV_OWNER_ID}\""
-    if [ -n "${PREV_OWNER_NAME}" ]; then
-        IDENTITY_KEYS="${IDENTITY_KEYS}, \"identity_name\": \"${PREV_OWNER_NAME}\""
-    fi
-    ISSUE_KEYS="\"agent_id\": \"${AGENT_ID}\", \"agent_external_id\": \"${SPIFFE_ID}\", ${IDENTITY_KEYS}"
+    ISSUE_KEYS="\"agent_id\": \"${AGENT_ID}\", \"agent_external_id\": \"${SPIFFE_ID}\", \"identity_id\": \"${PREV_OWNER_ID}\""
     PREVIOUS_OWNER_FIELD=", \"previous_owner\": { \"value\": \"${PREV_OWNER_ID}\", \"type\": \"User\" }"
     MESSAGE="Agent has no valid owner — the previously assigned account '${PREV_OWNER_ID}' has been deactivated."
 else

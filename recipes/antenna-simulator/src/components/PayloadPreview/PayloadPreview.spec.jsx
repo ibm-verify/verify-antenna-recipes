@@ -4,10 +4,10 @@ import PayloadPreview from './PayloadPreview.jsx'
 
 const basePayload = {
   issue_id:       '185321-123',
-  issue_keys:     { identity_name: 'alice@ibm.com', agent_id: 'agent-uuid' },
+  issue_keys:     { identity_id: '8120028SFS', agent_id: 'agent-uuid' },
   issue_time:     '2026-10-06T15:00:32Z',
   issue_type:     'Compromised User',
-  message:        'alice@ibm.com email address was found in one or more data breaches',
+  message:        '8120028SFS credentials were found in one or more data breaches',
   playbook_name:  'Compromised User',
   risk:           'Critical',
 }
@@ -18,9 +18,9 @@ describe('PayloadPreview', () => {
     expect(screen.getByText(/VIP Payload Preview/i)).toBeInTheDocument()
   })
 
-  it('renders identity_name in the JSON preview', () => {
+  it('renders identity_id in the JSON preview', () => {
     render(<PayloadPreview payload={basePayload} sentStatus={null} />)
-    expect(screen.getByText(/alice@ibm\.com/)).toBeInTheDocument()
+    expect(screen.getByText(/8120028SFS/)).toBeInTheDocument()
   })
 
   it('renders agent_id in the JSON preview', () => {

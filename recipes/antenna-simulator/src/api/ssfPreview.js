@@ -12,23 +12,19 @@ const SCIM_AGENT_SCHEMA = 'urn:ietf:params:scim:schemas:core:ibm:2.0:Agent'
  * in vip_event_mapper.js.
  */
 function buildVipSsfPreview(userId, agentId, payload) {
-  // Mirror mapper subject logic: identity_id (opaque) > identity_name (email)
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userId)
+  // Mirror mapper subject logic: identity_id is an opaque IBM Verify user ID
+  const user = { format: 'opaque', id: userId }
   let sub_id
   if (userId && agentId) {
     sub_id = {
       format: 'complex',
-      user:   isEmail
-        ? { format: 'email',  email: userId }
-        : { format: 'opaque', id:    userId },
+      user,
       agent:  { format: 'opaque', id: agentId },
     }
   } else if (agentId) {
     sub_id = { format: 'opaque', id: agentId }
   } else {
-    sub_id = isEmail
-      ? { format: 'email',  email: userId }
-      : { format: 'opaque', id:    userId }
+    sub_id = user
   }
 
   const ts = new Date(payload.issue_time).getTime()
@@ -38,7 +34,7 @@ function buildVipSsfPreview(userId, agentId, payload) {
     const adminReason = 'Credentials for agent owner were found in one or more data breaches'
     events[RISC_CRED] = {
       event_type:      RISC_CRED,
-      credential_type: isEmail ? 'email' : 'password',
+      credential_type: 'password',
       reason_admin:    { en: adminReason },
       reason_user:     { en: 'Your account has been compromised' },
       event_timestamp: ts,

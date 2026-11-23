@@ -12,19 +12,17 @@
 # Examples:
 #   ./emit_geo_anomaly_event.sh
 #   ./emit_geo_anomaly_event.sh https://localhost:9044
-#   ./emit_geo_anomaly_event.sh https://localhost:9044 user@example.com 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b
 #   ./emit_geo_anomaly_event.sh https://localhost:9044 8120028SFS 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b
 #
 # IBM Verify playbook subject paths:
 #   Agent ID   : @context.subject.sub_id.agent.id@
-#   User ID    : @context.subject.sub_id.user.id@    (opaque / non-email)
-#   User email : @context.subject.sub_id.user.email@ (email format)
+#   User ID    : @context.subject.sub_id.user.id@    (opaque IBM Verify user ID)
 # ==============================================================================
 
 set -euo pipefail
 
 TRANSMITTER_URL="${1:-https://localhost:9044}"
-USER_ID="${2:-user@example.com}"
+USER_ID="${2:-8120028SFS}"
 AGENT_ID="${3:-01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b}"
 ISSUE_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
@@ -43,7 +41,7 @@ curl -k -i --request POST \
     \"incident_count\": 1,
     \"issue_id\": \"183682-$(date +%s)\",
     \"issue_keys\": {
-        \"identity_name\": \"${USER_ID}\",
+        \"identity_id\": \"${USER_ID}\",
         \"agent_id\": \"${AGENT_ID}\"
     },
     \"issue_time\": \"${ISSUE_TIME}\",
@@ -57,8 +55,7 @@ echo ""
 echo "================================================================="
 echo " IBM Verify playbook subject paths:"
 echo "   Agent ID   : @context.subject.sub_id.agent.id@"
-echo "   User ID    : @context.subject.sub_id.user.id@    (opaque / non-email)"
-echo "   User email : @context.subject.sub_id.user.email@ (email format)"
+echo "   User ID    : @context.subject.sub_id.user.id@    (opaque IBM Verify user ID)"
 echo ""
 echo " Check transmitter logs:"
 echo "   tail -n 50 deploying/transmitter/container-runtime/logs/transmitter.log"

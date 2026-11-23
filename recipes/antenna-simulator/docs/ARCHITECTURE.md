@@ -86,5 +86,5 @@ antenna-simulator/
 ## 🔌 API & Integration Layer
 
 - **`src/api/transmitter.js`**: Communicates with the Antenna Transmitter REST endpoints (`/sources/...`).
-- **`src/api/payload.js`**: Constructs standards-compliant SSF event subjects (Account, Email, IP, Device) and event objects.
+- **`src/api/payload.js`**: Constructs standards-compliant SSF event subjects (Account, IP, Device) and event objects.
 - **`src/api/ssfPreview.js`**: Builds preview tokens matching OpenID Shared Signals and Events (SSF) specification.

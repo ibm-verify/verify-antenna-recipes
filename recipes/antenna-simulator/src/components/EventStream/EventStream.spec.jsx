@@ -10,13 +10,13 @@ const makeRecord = (overrides = {}) => ({
     issue_type: 'Compromised User',
     risk:       'Critical',
     issue_time: '2026-10-06T15:00:32Z',
-    issue_keys: { identity_name: 'alice@ibm.com', agent_id: 'agent-uuid' },
-    message:    'alice@ibm.com email address was found in one or more data breaches',
+    issue_keys: { identity_id: '8120028SFS', agent_id: 'agent-uuid' },
+    message:    '8120028SFS credentials were found in one or more data breaches',
   },
   output: {
     sub_id: {
       format: 'complex',
-      user:   { format: 'email',  email: 'alice@ibm.com' },
+      user:   { format: 'opaque', id:    '8120028SFS' },
       agent:  { format: 'opaque', id:    'agent-uuid' },
     },
     events: {
@@ -83,9 +83,9 @@ describe('EventStream', () => {
     expect(screen.getByText('⬆ SSF SET (output)')).toBeInTheDocument()
   })
 
-  it('renders identity_name in at least one JSON panel', () => {
+  it('renders identity_id in at least one JSON panel', () => {
     render(<EventStream records={[makeRecord()]} />)
-    expect(screen.getAllByText(/alice@ibm\.com/).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getAllByText(/8120028SFS/).length).toBeGreaterThanOrEqual(1)
   })
 
   it('renders complex sub_id in SSF JSON panel', () => {

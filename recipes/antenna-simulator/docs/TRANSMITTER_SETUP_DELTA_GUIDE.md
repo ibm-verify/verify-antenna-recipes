@@ -52,7 +52,7 @@ cp recipes/antenna-simulator/transmitter-configs/vip_event_mapper.js \
 
 > **What changed in `vip_event_mapper.js`:**
 > - Generates both standard RISC/CAEP events and NHI custom events (`urn:ibm:agent:unregistered_agent`, `urn:ibm:agent:anomalous_access`, `urn:ibm:agent:invalid_owner`).
-> - Supports **Complex Subjects** containing both the User (`user_id` / `email`) and Non-Human Identity (`agent_id` / `agent_name`).
+> - Supports **Complex Subjects** containing both the User (opaque IBM Verify `user_id`) and Non-Human Identity (`agent_id` / `agent_name`).
 
 ---
 
@@ -226,10 +226,10 @@ Run from `recipes/antenna-simulator/transmitter-configs`:
 ./emit_agent_created_event.sh https://localhost:9044 <AGENT_NAME> <EXT_AGENT_ID> <USER_ID>
 
 # 4. Anomalous Access (urn:ibm:agent:anomalous_access)
-./emit_anomalous_access_event.sh https://localhost:9044 <AGENT_ID> <USER_ID> <USER_NAME> <ASSET_TYPE> <ASSET_ID> <IP_ADDRESS>
+./emit_anomalous_access_event.sh https://localhost:9044 <AGENT_ID> <USER_ID> <ASSET_TYPE> <ASSET_ID> <IP_ADDRESS>
 
 # 5. Invalid Owner (urn:ibm:agent:invalid_owner)
-./emit_invalid_owner_event.sh https://localhost:9044 <AGENT_ID> <PREV_OWNER_ID> <PREV_OWNER_NAME> <EXT_AGENT_ID>
+./emit_invalid_owner_event.sh https://localhost:9044 <AGENT_ID> <PREV_OWNER_ID> <EXT_AGENT_ID>
 ```
 
 ### 6.3. Inspect Transmitter Logs
