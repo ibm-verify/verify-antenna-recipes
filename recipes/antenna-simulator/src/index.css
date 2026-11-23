@@ -1,0 +1,90 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── IBM Carbon Design Tokens — Dark Theme (default) ─────────────────────── */
+:root,
+[data-theme="dark"] {
+  /* IBM Carbon Gray 100 family */
+  --bg:           #161616;   /* Gray 100 */
+  --surface:      #262626;   /* Gray 90  */
+  --surface2:     #393939;   /* Gray 80  */
+  --border:       #525252;   /* Gray 70  */
+  --border-bright:#6f6f6f;   /* Gray 60  */
+
+  /* Text */
+  --text:         #f4f4f4;   /* Gray 10  */
+  --muted:        #a8a8a8;   /* Gray 40  */
+  --text-inv:     #161616;   /* Gray 100 — for text on light backgrounds */
+
+  /* IBM Carbon Blue */
+  --accent:       #4589ff;   /* Blue 50  */
+  --accent-hover: #0f62fe;   /* Blue 60  */
+  --accent-light: #a6c8ff;   /* Blue 30  */
+
+  /* Semantic colours (IBM Carbon) */
+  --green:        #42be65;   /* Green 40 */
+  --green-light:  #a7f0ba;   /* Green 20 */
+  --yellow:       #f1c21b;   /* Yellow 30 */
+  --red:          #fa4d56;   /* Red 40   */
+  --red-light:    #ffd7d9;   /* Red 20   */
+  --cyan:         #33b1ff;   /* Cyan 40  */
+  --purple:       #be95ff;   /* Purple 40 */
+  --purple-deep:  #8a3ffc;   /* Purple 60 */
+  --teal:         #3ddbd9;   /* Teal 40  */
+
+  /* Log terminal background */
+  --terminal-bg:  #0d0d0d;
+
+  /* Theme toggle surface */
+  --toggle-track: #525252;
+  --toggle-thumb: #f4f4f4;
+  --toggle-icon:  #f4f4f4;
+
+  /* Topbar border accent line */
+  --topbar-accent: #0f62fe;
+}
+
+/* ── IBM Carbon Design Tokens — Light Theme ──────────────────────────────── */
+[data-theme="light"] {
+  --bg:           #f4f4f4;   /* Gray 10  */
+  --surface:      #ffffff;   /* White    */
+  --surface2:     #e8e8e8;   /* Gray 20  */
+  --border:       #c6c6c6;   /* Gray 30  */
+  --border-bright:#8d8d8d;   /* Gray 50  */
+
+  --text:         #161616;   /* Gray 100 */
+  --muted:        #525252;   /* Gray 70  */
+  --text-inv:     #f4f4f4;
+
+  --accent:       #0f62fe;   /* Blue 60  */
+  --accent-hover: #0043ce;   /* Blue 70  */
+  --accent-light: #d0e2ff;   /* Blue 20  */
+
+  --green:        #198038;   /* Green 60 */
+  --green-light:  #defbe6;   /* Green 10 */
+  --yellow:       #b28600;   /* Yellow 50*/
+  --red:          #da1e28;   /* Red 60   */
+  --red-light:    #fff1f1;   /* Red 10   */
+  --cyan:         #0072c3;   /* Cyan 60  */
+  --purple:       #8a3ffc;   /* Purple 60 */
+  --purple-deep:  #6929c4;   /* Purple 70 */
+  --teal:         #009d9a;   /* Teal 60  */
+
+  --terminal-bg:  #f4f4f4;
+
+  --toggle-track: #0f62fe;
+  --toggle-thumb: #ffffff;
+  --toggle-icon:  #161616;
+
+  --topbar-accent: #0f62fe;
+}
+
+html, body, #root {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "IBM Plex Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background 0.25s, color 0.25s;
+}

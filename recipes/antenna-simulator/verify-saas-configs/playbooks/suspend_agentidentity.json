@@ -1,0 +1,66 @@
+{
+    "model": [
+        {
+            "id": "node-1-Start",
+            "name": "Start",
+            "next": {
+                "node": "node-2-ModifyAgentStatus",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 90
+                    },
+                    {
+                        "x": 263,
+                        "y": 165
+                    }
+                ]
+            },
+            "position": {
+                "x": 200,
+                "y": 50
+            },
+            "taskType": "Start"
+        },
+        {
+            "id": "node-2-ModifyAgentStatus",
+            "name": "Modify agent status",
+            "next": {
+                "node": "node-5-End",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 241
+                    },
+                    {
+                        "x": 263,
+                        "y": 315
+                    }
+                ]
+            },
+            "input": {
+                "status": "SUSPENDED",
+                "agentId": "@context.subject.sub_id.agent.id@"
+            },
+            "output": [
+                "agentStatus"
+            ],
+            "position": {
+                "x": 169,
+                "y": 165
+            },
+            "taskType": "ModifyAgentStatus"
+        },
+        {
+            "id": "node-5-End",
+            "name": "End",
+            "position": {
+                "x": 200,
+                "y": 315
+            },
+            "taskType": "End"
+        }
+    ],
+    "reference": "agentidentity",
+    "propertiesSchemaVersion": 5.2
+}

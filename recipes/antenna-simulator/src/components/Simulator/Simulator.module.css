@@ -1,0 +1,320 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+/* ── Section heading shared style ── */
+.selectorSection,
+.fieldsSection {
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.selectorLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.sectionNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── Event type cards grid ── */
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.eventCard {
+  position: relative;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 12px 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.eventCard:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface2));
+}
+
+.eventCardActive {
+  border-color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface2)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.eventCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.eventIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.eventBadge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Badge colour variants */
+.badge_red    { background: color-mix(in srgb, var(--red)    20%, transparent); color: var(--red); }
+.badge_yellow { background: color-mix(in srgb, var(--yellow) 20%, transparent); color: var(--yellow); }
+.badge_blue   { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); }
+.badge_purple { background: color-mix(in srgb, var(--purple) 20%, transparent); color: var(--purple); }
+
+.eventLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.eventScenario {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text);
+  opacity: 0.75;
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+.eventDesc {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 3px;
+}
+
+.selectedCheck {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── URN row ── */
+.urnRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.urnLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.urnValue {
+  font-family: "IBM Plex Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cyan) 20%, transparent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+/* ── Fields ── */
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px 16px;
+  align-items: start;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fieldHint {
+  font-size: 10px;
+  color: var(--border-bright);
+  line-height: 1.3;
+  margin-top: 1px;
+}
+
+.fieldInput {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12.5px;
+  font-family: "IBM Plex Mono", Menlo, Consolas, monospace;
+  padding: 8px 11px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+
+.fieldInput:focus {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg));
+}
+
+.fieldInput::placeholder {
+  color: var(--border-bright);
+  opacity: 0.8;
+}
+
+/* ── Action row ── */
+.actionRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 18px;
+}
+
+.sendBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 36px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  /* IBM Blue 60 default */
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.sendBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.sendBtn:active:not(:disabled) { transform: translateY(0px); }
+
+.sendBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Colour overrides per event category */
+.sendBtn_red {
+  background: var(--red);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--red) 35%, transparent);
+}
+.sendBtn_red:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--red) 80%, #000);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--red) 45%, transparent);
+}
+
+.sendBtn_yellow {
+  background: var(--yellow);
+  color: var(--text-inv);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--yellow) 35%, transparent);
+}
+.sendBtn_yellow:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--yellow) 85%, #000);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--yellow) 45%, transparent);
+}
+
+.sendBtn_purple {
+  background: var(--purple-deep);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--purple-deep) 35%, transparent);
+}
+.sendBtn_purple:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--purple-deep) 80%, #000);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--purple-deep) 45%, transparent);
+}
+
+.caption {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+/* ── Loading spinner ── */
+.spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "previous_owner": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "reason_admin": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "event_timestamp": {
+      "type": "integer"
+    }
+  }
+}
