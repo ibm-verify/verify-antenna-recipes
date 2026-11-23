@@ -10,7 +10,7 @@ The instructions below assume a container runtime deployment but similar changes
 
 Before applying these delta changes, follow the standard local datastore and VIP transmitter setup steps as documented in the official recipe:
 
-👉 **[IBM Verify Antenna VIP Transmitter Setup Guide](https://github.com/ibm-verify/verify-antenna-recipes/blob/main/recipes/vip/transmitter/README.md)**
+👉 **[IBM Verify Antenna VIP Transmitter Setup Guide](../../vip/transmitter/README.md)**
 
 Once you have completed the base setup steps (certificates generation, datastore running, and base transmitter initialized), apply the specific edits below to get the Threat Detection & NHI demo running.
 
@@ -42,12 +42,12 @@ Replace the existing `vip_event_mapper.js` with the updated version from `transm
 2. `deploying/transmitter/container-runtime/configs/js/vip_event_mapper.js`
 
 ```bash
-# Example copy commands (from your workspace root):
-cp antenna-simulator/transmitter-configs/vip_event_mapper.js \
-   verify-antenna-recipes/recipes/vip/transmitter/configs/js/vip_event_mapper.js
+# Example copy commands (from the repository root):
+cp recipes/antenna-simulator/transmitter-configs/vip_event_mapper.js \
+   recipes/vip/transmitter/configs/js/vip_event_mapper.js
 
-cp antenna-simulator/transmitter-configs/vip_event_mapper.js \
-   verify-antenna-recipes/deploying/transmitter/container-runtime/configs/js/vip_event_mapper.js
+cp recipes/antenna-simulator/transmitter-configs/vip_event_mapper.js \
+   deploying/transmitter/container-runtime/configs/js/vip_event_mapper.js
 ```
 
 > **What changed in `vip_event_mapper.js`:**
@@ -64,9 +64,9 @@ Copy or merge the configuration from `transmitter-configs/transmitter.yml` into 
 `deploying/transmitter/container-runtime/configs/transmitter.yml`
 
 ```bash
-# Example copy command:
-cp antenna-simulator/transmitter-configs/transmitter.yml \
-   verify-antenna-recipes/deploying/transmitter/container-runtime/configs/transmitter.yml
+# Example copy command (from the repository root):
+cp recipes/antenna-simulator/transmitter-configs/transmitter.yml \
+   deploying/transmitter/container-runtime/configs/transmitter.yml
 ```
 
 > **Key Additions in `transmitter.yml`:**
@@ -168,7 +168,7 @@ Copy your assigned public HTTPS URL (e.g., `https://steadfast-thumb-garment.ngro
 By default, the Antenna Simulator connects to `https://localhost:9044`.
 
 ### Option A: Localhost (Default)
-In `antenna-simulator/vite.config.js`:
+In `recipes/antenna-simulator/vite.config.js`:
 ```javascript
 server: {
   port: 9045,
@@ -183,7 +183,7 @@ server: {
 ```
 
 ### Option B: Ngrok / Remote URL
-Update `antenna-simulator/vite.config.js` or set `VITE_PROXY_URL`:
+Update `recipes/antenna-simulator/vite.config.js` or set `VITE_PROXY_URL`:
 ```javascript
 server: {
   port: 9045,
@@ -213,7 +213,7 @@ curl -s https://<your-ngrok-domain>.ngrok-free.dev/.well-known/ssf-configuration
 You can also verify these in a browser.
 
 ### 6.2. Emitting Test Events via CLI
-Run from `/transmitter-configs`:
+Run from `recipes/antenna-simulator/transmitter-configs`:
 
 ```bash
 # 1. Credential Compromised (RISC credential-compromise)

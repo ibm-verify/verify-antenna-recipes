@@ -12,7 +12,7 @@
 # Examples:
 #   ./emit_geo_anomaly_event.sh
 #   ./emit_geo_anomaly_event.sh https://localhost:9044
-#   ./emit_geo_anomaly_event.sh https://localhost:9044 rupesh.kapse@ibm.com 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b
+#   ./emit_geo_anomaly_event.sh https://localhost:9044 user@example.com 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b
 #   ./emit_geo_anomaly_event.sh https://localhost:9044 8120028SFS 01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b
 #
 # IBM Verify playbook subject paths:
@@ -24,7 +24,7 @@
 set -euo pipefail
 
 TRANSMITTER_URL="${1:-https://localhost:9044}"
-USER_ID="${2:-rupesh.kapse@ibm.com}"
+USER_ID="${2:-user@example.com}"
 AGENT_ID="${3:-01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b}"
 ISSUE_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 

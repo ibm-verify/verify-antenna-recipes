@@ -11,7 +11,7 @@
 #
 # Examples:
 #   ./emit_anomalous_access_event.sh
-#   ./emit_anomalous_access_event.sh https://localhost:9044 am-agent-7f3c1d 8120028SFS rupesh.kapse@ibm.com database prod-db-01 192.168.55.21
+#   ./emit_anomalous_access_event.sh https://localhost:9044 am-agent-7f3c1d 8120028SFS user@example.com database prod-db-01 192.168.55.21
 #
 # Playbook context paths (SET subject / event payload):
 #   Agent id    : @context.subject.sub_id.agent.id@
@@ -27,7 +27,7 @@ set -euo pipefail
 TRANSMITTER_URL="${1:-https://localhost:9044}"
 AGENT_ID="${2:-01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b}"
 IDENTITY_ID="${3:-8120028SFS}"
-IDENTITY_NAME="${4:-rupesh.kapse@ibm.com}"
+IDENTITY_NAME="${4:-user@example.com}"
 ASSET_TYPE="${5:-database}"
 ASSET_ID="${6:-prod-db-01}"
 IP_ADDRESS="${7:-192.168.55.21}"

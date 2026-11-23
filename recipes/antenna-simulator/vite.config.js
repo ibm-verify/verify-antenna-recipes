@@ -13,11 +13,6 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      // Forward SSE log-tail to proxy.js (runs on 9046)
-      '/log/stream': {
-        target: 'http://localhost:9046',
-        changeOrigin: true,
-      },
     }
   },
 

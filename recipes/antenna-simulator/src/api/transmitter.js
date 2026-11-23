@@ -1,7 +1,7 @@
 import { PROXY_URL } from '../config.js'
 
 /**
- * POST a VIP event payload to the transmitter via the Vite dev proxy (or proxy.js).
+ * POST a VIP event payload to the transmitter via the Vite dev proxy.
  *
  * @param {object} payload  - VIP event object from buildPayload()
  * @returns {Promise<{ ok: boolean, status?: number, error?: string }>}

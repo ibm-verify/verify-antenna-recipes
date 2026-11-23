@@ -34,7 +34,7 @@ describe('Simulator', () => {
 
   it('pre-fills User ID with default value', () => {
     renderSimulator()
-    expect(screen.getByLabelText(/user id/i)).toHaveValue('rupesh.kapse@ibm.com')
+    expect(screen.getByLabelText(/user id/i)).toHaveValue('user@example.com')
   })
 
   it('pre-fills Agent ID with default value on geo-anomaly scenario', async () => {

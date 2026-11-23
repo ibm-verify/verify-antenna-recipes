@@ -3,7 +3,7 @@ import { DEFAULTS, EVENT_DEFINITIONS } from '../../config.js'
 import styles from './Simulator.module.css'
 
 const FIELD_META = {
-  userId:      { label: 'User ID / Email',    placeholder: 'rupesh.kapse@ibm.com',                        hint: 'Identity owner / previous owner' },
+  userId:      { label: 'User ID / Email',    placeholder: 'user@example.com',                        hint: 'Identity owner / previous owner' },
   agentId:     { label: 'Agent ID',           placeholder: '01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b',       hint: 'Opaque UUID' },
   displayName: { label: 'Display Name',       placeholder: 'Trade Agent Alpha',                            hint: 'Human-readable agent name' },
   description: { label: 'Description',        placeholder: 'Trade Agent for Execution',                    hint: 'Short description' },

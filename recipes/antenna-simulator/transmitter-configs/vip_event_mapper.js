@@ -41,7 +41,7 @@
 //        "authmind_agent_id": "am-agent-7f3c1d",
 //        "agent_external_id": "spiffe://dune.spire.local/trade-agent-alpha",
 //        "identity_id": "8120028SFS",
-//        "identity_name": "rupesh.kapse@ibm.com"
+//        "identity_name": "user@example.com"
 //      },
 //      "issue_time": "2026-10-15T11:15:37Z",
 //      "issue_type": "Unregistered Agent Detected",
@@ -63,7 +63,7 @@
 //      "issue_keys": {
 //        "agent_id": "am-agent-7f3c1d",
 //        "identity_id": "8120028SFS",
-//        "identity_name": "rupesh.kapse@ibm.com",
+//        "identity_name": "user@example.com",
 //        "asset_type": "database",
 //        "asset_id": "prod-db-01",
 //        "ip_address": "192.168.55.21"

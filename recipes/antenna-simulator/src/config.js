@@ -2,7 +2,7 @@
 export const PROXY_URL = import.meta.env.VITE_PROXY_URL || ''
 
 export const DEFAULTS = {
-  userId:      'rupesh.kapse@ibm.com',
+  userId:      'user@example.com',
   agentId:     '01a0d2f7-a9c8-7a8d-a6f1-abc591a7d58b',
   displayName: 'Trade Agent Alpha',
   description: 'Trade Agent for Execution',

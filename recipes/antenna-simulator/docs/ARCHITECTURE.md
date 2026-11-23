@@ -61,7 +61,7 @@ antenna-simulator/
 - Provides search, filtering by event type, and detailed payload view on click.
 
 ### 5. `Log` (`src/components/Log/`)
-- Displays live console logs and backend SSE log streams (`/log/stream`).
+- Displays the live in-app execution console (pipeline trace entries for each simulated event).
 
 ### 6. `AppContext` (`src/context/AppContext.jsx`)
 - Centralized React Context managing:

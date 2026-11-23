@@ -31,7 +31,7 @@ Before launching the Antenna Simulator UI, configure and start the IBM Verify An
 👉 [**Transmitter Setup & Delta Guide (Threat Detection & NHI)**](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md)
 
 ### Key Setup Steps:
-1. **Base Transmitter Setup**: Follow the official [IBM Verify Antenna VIP Transmitter Setup Guide](https://github.com/ibm-verify/verify-antenna-recipes/blob/main/recipes/vip/transmitter/README.md).
+1. **Base Transmitter Setup**: Follow the official [IBM Verify Antenna VIP Transmitter Setup Guide](../vip/transmitter/README.md).
 2. **Apply Delta Configurations**:
    - Replace `vip_event_mapper.js` in your recipes directory with [`transmitter-configs/vip_event_mapper.js`](transmitter-configs/vip_event_mapper.js).
    - Update `transmitter.yml` using the template at [`transmitter-configs/transmitter.yml`](transmitter-configs/transmitter.yml) to add the custom NHI `event_types` and `vip` ingester source.
@@ -85,7 +85,6 @@ The application will start at:
 The development server includes a built-in proxy in [`vite.config.js`](vite.config.js) to avoid CORS issues:
 
 - `/sources/*` $\rightarrow$ Proxied to Antenna Transmitter (`https://localhost:9044` by default, or your Ngrok URL) with SSL verification bypassed for self-signed certificates.
-- `/log/stream` $\rightarrow$ Proxied to local log stream service (`http://localhost:9046`).
 
 To point the UI to an Ngrok tunnel or remote URL, see [Connecting Antenna Simulator UI to Transmitter](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md#5-connecting-antenna-simulator-ui-to-transmitter).
 
