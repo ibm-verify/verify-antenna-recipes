@@ -1,0 +1,67 @@
+---
+version: 26.03
+
+logging:
+  level: info
+
+transmitter:
+  server:
+    ssl:
+      key: 'ks:server/key'
+      certificate: 'ks:server/cert'
+  base_url: "https://<your-ngrok-domain>.ngrok-free.dev" # Or https://localhost:9044
+  issuer: "https://<your-ngrok-domain>.ngrok-free.dev"   # Or https://localhost:9044
+  
+  event_types:
+    - "https://schemas.openid.net/secevent/ssf/event-type/verification"
+    - "https://schemas.openid.net/secevent/caep/event-type/session-revoked"
+    - "https://schemas.openid.net/secevent/caep/event-type/device-compliance-change"
+    - "https://schemas.openid.net/secevent/caep/event-type/risk-level-change"
+    - "https://schemas.openid.net/secevent/risc/event-type/credential-compromise"
+    - "https://iam.ibm.com/secevent/ssf/event-type/application"
+    - "urn:ibm:agent:unregistered_agent"
+    - "urn:ibm:agent:anomalous_access"
+    - "urn:ibm:agent:invalid_owner"
+
+  runtime:
+    enabled: true
+    jwks:
+      signing_keystore: jwks_keys
+      default_signing_key: jwtsigner
+    sign_poll_set: true
+    max_ssf_event_worker: 10
+    max_set_push_worker: 15
+    wait_ssf_event_timeout: 5s
+    request_timeout: 20
+
+  ingester:
+    enabled: true
+    worker_threads: 10
+    sources:
+      - id: mdm
+        type: http_push
+        transform_rule:
+          type: javascript
+          content: "@js/mdm_mapper.js"
+      - id: ssf_compliant
+        type: http_push
+        transform_rule:
+          type: javascript
+          content: "@js/ssf_mapper.js"
+      - id: vip
+        type: http_push
+        transform_rule:
+          type: javascript
+          content: "@js/vip_event_mapper.js"
+
+javascript:
+  timeout: 10
+  max_concurrent_jobs: 16
+  max_ctx_pre_isolate: 50
+
+authorization_schemes:
+  - spec_urn: "urn:ietf:rfc:6749"
+    client_id: "<your-verify-client-id>"
+    client_secret: "<your-verify-client-secret>"
+    client_authentication_method: "client_secret_post"
+    discovery_uri: "https://<your-tenant>.verify.ibmcloudsecurity.com/oauth2/.well-known/openid-configuration"

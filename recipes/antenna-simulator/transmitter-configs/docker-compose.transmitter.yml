@@ -1,0 +1,19 @@
+services:
+  antenna-transmitter:
+    image: icr.io/ibm-verify/ibm-verify-antenna-transmitter:26.09.0
+    container_name: antenna-transmitter
+    restart: always
+    ports:
+      - "9044:9044"
+    volumes:
+      - ./configs:/var/antenna/config
+      - ./db:/db
+      - ./logs:/logs
+    entrypoint: >
+      sh -c "exec /app/antenna 2>&1 | tee /logs/transmitter.log"
+    env_file: "./.env"
+
+networks:
+  default:
+    name: antenna-network
+    external: true
