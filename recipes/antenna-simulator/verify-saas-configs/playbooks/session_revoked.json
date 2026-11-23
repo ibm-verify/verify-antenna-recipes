@@ -1,0 +1,64 @@
+{
+    "model": [
+        {
+            "id": "node-1-Start",
+            "name": "Start",
+            "next": {
+                "node": "node-2-DeleteOAuthGrant",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 90
+                    },
+                    {
+                        "x": 263,
+                        "y": 165
+                    }
+                ]
+            },
+            "position": {
+                "x": 200,
+                "y": 50
+            },
+            "taskType": "Start"
+        },
+        {
+            "id": "node-2-DeleteOAuthGrant",
+            "name": "Delete OAuth grant",
+            "next": {
+                "node": "node-3-End",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 241
+                    },
+                    {
+                        "x": 263,
+                        "y": 316
+                    }
+                ]
+            },
+            "input": {
+                "userId": "@context.subject.sub_id.id@",
+                "grantId": "",
+                "sessionId": ""
+            },
+            "position": {
+                "x": 169,
+                "y": 165
+            },
+            "taskType": "DeleteOAuthGrant"
+        },
+        {
+            "id": "node-3-End",
+            "name": "End",
+            "position": {
+                "x": 200,
+                "y": 316
+            },
+            "taskType": "End"
+        }
+    ],
+    "reference": "session_revoked",
+    "propertiesSchemaVersion": 5.2
+}

@@ -1,0 +1,66 @@
+{
+    "model": [
+        {
+            "id": "node-1-Start",
+            "name": "Start",
+            "next": {
+                "node": "node-2-CreateAgent",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 90
+                    },
+                    {
+                        "x": 263,
+                        "y": 165
+                    }
+                ]
+            },
+            "position": {
+                "x": 200,
+                "y": 50
+            },
+            "taskType": "Start"
+        },
+        {
+            "id": "node-2-CreateAgent",
+            "name": "Create agent",
+            "next": {
+                "node": "node-3-End",
+                "connectionWayPoints": [
+                    {
+                        "x": 263,
+                        "y": 241
+                    },
+                    {
+                        "x": 263,
+                        "y": 316
+                    }
+                ]
+            },
+            "input": {
+                "agent": "@context.event.event_data.data@"
+            },
+            "output": [
+                "agentId",
+                "createdAgent"
+            ],
+            "position": {
+                "x": 169,
+                "y": 165
+            },
+            "taskType": "CreateAgent"
+        },
+        {
+            "id": "node-3-End",
+            "name": "End",
+            "position": {
+                "x": 200,
+                "y": 316
+            },
+            "taskType": "End"
+        }
+    ],
+    "reference": "agentcreation",
+    "propertiesSchemaVersion": 5.2
+}

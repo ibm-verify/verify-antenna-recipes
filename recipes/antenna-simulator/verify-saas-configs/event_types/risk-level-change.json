@@ -1,0 +1,158 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schemas.openid.net/secevent/caep/event-type/risk-level-change",
+    "title": "Risk Level Change [CAEP] (v1.0)",
+    "description": "Signals a change in the assessed risk level of the subject, derived from signals gathered and analysed by the Transmitter. The required 'principal' claim identifies the entity type (USER, DEVICE, SESSION, etc.) and 'current_level' states the new risk tier (LOW, MEDIUM, or HIGH). The optional 'previous_level' and 'risk_reason' claims give Receivers additional context to calibrate their response.",
+    "type": "object",
+    "required": [
+        "principal",
+        "current_level"
+    ],
+    "properties": {
+        "event_timestamp": {
+            "type": "integer",
+            "description": "Time at which the risk level change occurred, as seconds since the Unix epoch (NumericDate).",
+            "examples": [
+                1615304991
+            ]
+        },
+        "principal": {
+            "type": "string",
+            "description": "REQUIRED. The principal entity involved in the observed risk event. Identifies the primary subject associated with the event.",
+            "anyOf": [
+                {
+                    "const": "USER",
+                    "description": "The subject is a user."
+                },
+                {
+                    "const": "DEVICE",
+                    "description": "The subject is a device."
+                },
+                {
+                    "const": "SESSION",
+                    "description": "The subject is a session."
+                },
+                {
+                    "const": "TENANT",
+                    "description": "The subject is a tenant."
+                },
+                {
+                    "const": "ORG_UNIT",
+                    "description": "The subject is an organisational unit."
+                },
+                {
+                    "const": "GROUP",
+                    "description": "The subject is a group."
+                },
+                {
+                    "type": "string",
+                    "description": "Any other entity as defined in Section 2 of the SSF specification."
+                }
+            ],
+            "examples": [
+                "USER",
+                "DEVICE",
+                "SESSION"
+            ]
+        },
+        "current_level": {
+            "type": "string",
+            "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "low",
+                "medium",
+                "high",
+                "Low",
+                "Medium",
+                "High"
+            ],
+            "description": "REQUIRED. The current risk level for the subject."
+        },
+        "previous_level": {
+            "type": "string",
+            "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "low",
+                "medium",
+                "high",
+                "Low",
+                "Medium",
+                "High"
+            ],
+            "description": "OPTIONAL. The previously known risk level for the subject. If omitted, the Receiver MUST assume the previous level is unknown to the Transmitter."
+        },
+        "risk_reason": {
+            "type": "string",
+            "description": "RECOMMENDED. Indicates the reason that contributed to the risk level change.",
+            "examples": [
+                "PASSWORD_FOUND_IN_DATA_BREACH",
+                "DEVICE_ENCRYPTION_ENABLED"
+            ]
+        },
+        "initiating_entity": {
+            "type": "string",
+            "enum": [
+                "admin",
+                "user",
+                "policy",
+                "system"
+            ],
+            "description": "The entity that initiated the revocation. admin = human administrator; user = the subject themselves; policy = automated policy engine or rule; system = autonomous process."
+        },
+        "reason_admin": {
+            "type": "object",
+            "description": "Localised human-readable reason intended for administrators. Keys are BCP 47 language tags; values are the reason strings.",
+            "patternProperties": {
+                "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "examples": [
+                {
+                    "en": "Account compromised — all sessions terminated by security team."
+                },
+                {
+                    "en": "Account compromised — all sessions terminated by security team.",
+                    "fr": "Compte compromis — toutes les sessions ont été résiliées par l'équipe de sécurité."
+                }
+            ]
+        },
+        "reason_user": {
+            "type": "object",
+            "description": "Localised human-readable reason intended for the end-user. Keys are BCP 47 language tags; values are the reason strings.",
+            "patternProperties": {
+                "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "examples": [
+                {
+                    "en": "Your session was ended because unusual activity was detected on your account."
+                }
+            ]
+        }
+    },
+    "additionalProperties": true,
+    "examples": [
+        {
+            "current_level": "LOW",
+            "previous_level": "HIGH",
+            "event_timestamp": 1615304991,
+            "principal": "USER",
+            "risk_reason": "PASSWORD_FOUND_IN_DATA_BREACH",
+            "initiating_entity": "admin",
+            "reason_admin": {
+                "en": "Account compromised — all sessions terminated by security team."
+            },
+            "reason_user": {
+                "en": "Your session was ended because unusual activity was detected on your account."
+            }
+        }
+    ]
+}
