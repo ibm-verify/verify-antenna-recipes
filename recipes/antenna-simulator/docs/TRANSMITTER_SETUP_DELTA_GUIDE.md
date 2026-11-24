@@ -1,6 +1,6 @@
 # Risk detection tool Setup with SSF Transmitter
 
-This guide details the **delta changes** required in the `verify-antenna-recipes` repository to enable Non-Human Identity (NHI) / AI Agent governance and VIP threat detection flows, including exposing your local transmitter via **ngrok** for external IBM Verify integration.
+This guide details the **delta changes** required in the `verify-antenna-recipes` repository to enable agent threat detection flows, including exposing your local transmitter via **ngrok** for external IBM Verify integration.
 
 The instructions below assume a container runtime deployment but similar changes can be made for Kubernetes as well.
 
@@ -12,7 +12,7 @@ Before applying these delta changes, follow the standard local datastore and VIP
 
 👉 **[IBM Verify Antenna VIP Transmitter Setup Guide](../../vip/transmitter/README.md)**
 
-Once you have completed the base setup steps (certificates generation, datastore running, and base transmitter initialized), apply the specific edits below to get the Threat Detection & NHI demo running.
+Once you have completed the base setup steps (certificates generation, datastore running, and base transmitter initialized), apply the specific edits below to get the Security Events Simulator demo running.
 
 ---
 
@@ -22,7 +22,7 @@ Compared to the base local VIP transmitter recipe, the following changes are int
 
 | Component | Base Local Setup | Updated Flow (Delta) |
 | :--- | :--- | :--- |
-| **Event Types** | Only `risk-level-change` and `credential-compromise` | Added custom NHI event types (`urn:ibm:agent:unregistered_agent`, `urn:ibm:agent:anomalous_access`, `urn:ibm:agent:invalid_owner`). |
+| **Event Types** | Only `risk-level-change` and `credential-compromise` | Added custom agent event types (`urn:ibm:agent:unregistered_agent`, `urn:ibm:agent:anomalous_access`, `urn:ibm:agent:invalid_owner`). |
 | **Event Mapper** | Basic User VIP mapping | Multi-event mapper (`vip_event_mapper.js`) supporting Complex Subjects (`user` + `agent`) and specialized AI Agent threat events. |
 | **Ingester Source** | Manual entry | Added `vip` HTTP push source mapped to `@js/vip_event_mapper.js`. |
 | **Transmitter Logging** | Container stdout only | Mounted `./logs:/logs` and added container entrypoint to pipe logs directly into `transmitter.log`. |
@@ -51,7 +51,7 @@ cp recipes/antenna-simulator/transmitter-configs/vip_event_mapper.js \
 ```
 
 > **What changed in `vip_event_mapper.js`:**
-> - Generates both standard RISC/CAEP events and NHI custom events (`urn:ibm:agent:unregistered_agent`, `urn:ibm:agent:anomalous_access`, `urn:ibm:agent:invalid_owner`).
+> - Generates both standard RISC/CAEP events and agent events (`urn:ibm:agent:unregistered_agent`, `urn:ibm:agent:anomalous_access`, `urn:ibm:agent:invalid_owner`).
 > - Supports **Complex Subjects** containing both the User (opaque IBM Verify `user_id`) and Non-Human Identity (`agent_id` / `agent_name`).
 
 ---
@@ -71,7 +71,7 @@ cp recipes/antenna-simulator/transmitter-configs/transmitter.yml \
 
 > **Key Additions in `transmitter.yml`:**
 >
-> 1. **Custom NHI Event Types** under `transmitter.event_types`:
+> 1. **Agent Event Types** under `transmitter.event_types`:
 >    ```yaml
 >    event_types:
 >      - "https://schemas.openid.net/secevent/ssf/event-type/verification"
