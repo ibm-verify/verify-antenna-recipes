@@ -4,13 +4,28 @@ This document provides a breakdown of the folder structure, component hierarchy,
 
 ---
 
+## Data Flow
+
+```mermaid
+flowchart LR
+    VIP["IBM Verify Identity Protection"] -->|"1. Generates Security Event"| Antenna["IBM Verify Antenna<br/>(Transmitter)"]
+    Antenna -->|"2. Transmits SSF Event"| SaaS["IBM Verify SaaS<br/>(Receiver)"]
+    SaaS -->|"3. Triggers"| Playbook["Playbook Execution"]
+```
+
+The flow of events in the Shared Signals Framework (SSF) integration:
+
+1. **IBM Verify Identity Protection**: Detects security anomalies, risk changes, or policy violations and generates a security event.
+2. **IBM Verify Antenna (Transmitter)**: Ingests the raw security event, formats it into standard Security Event Tokens (SETs) per CAEP/SSF specifications, and transmits it to configured receivers.
+3. **IBM Verify SaaS (Receiver)**: Receives and validates the SSF event stream as a subscriber receiver.
+4. **Playbook Execution**: IBM Verify SaaS evaluates incoming signals and triggers automated remediation playbooks (e.g., revoking sessions, enforcing MFA, or resetting credentials).
+
+---
+
 ## 📁 Repository Structure
 
 ```
 antenna-simulator/
-├── .bob/                       # Bob IDE context and prompt rules
-│   └── rules/
-│       └── antenna-simulator-context.md
 ├── docs/                       # Project documentation
 │   └── ARCHITECTURE.md
 ├── src/

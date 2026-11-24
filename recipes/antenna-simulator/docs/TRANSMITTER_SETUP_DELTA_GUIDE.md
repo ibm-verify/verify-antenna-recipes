@@ -1,4 +1,4 @@
-# Transmitter Setup & Delta Guide: Threat Detection & NHI Playbooks
+# Risk detection tool Setup with SSF Transmitter
 
 This guide details the **delta changes** required in the `verify-antenna-recipes` repository to enable Non-Human Identity (NHI) / AI Agent governance and VIP threat detection flows, including exposing your local transmitter via **ngrok** for external IBM Verify integration.
 
@@ -163,9 +163,9 @@ Copy your assigned public HTTPS URL (e.g., `https://steadfast-thumb-garment.ngro
 
 ---
 
-## 5. Connecting Antenna Simulator UI to Transmitter
+## 5. Connecting the Simulator UI to Transmitter
 
-By default, the Antenna Simulator connects to `https://localhost:9044`.
+By default, the Simulator connects to `https://localhost:9044`.
 
 ### Option A: Localhost (Default)
 In `recipes/antenna-simulator/vite.config.js`:
