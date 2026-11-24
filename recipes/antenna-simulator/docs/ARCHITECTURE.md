@@ -16,9 +16,9 @@ flowchart LR
 The flow of events in the Shared Signals Framework (SSF) integration:
 
 1. **IBM Verify Identity Protection**: Detects security anomalies, risk changes, or policy violations and generates a security event.
-2. **IBM Verify Antenna (Transmitter)**: Ingests the raw security event, formats it into standard Security Event Tokens (SETs) per CAEP/SSF specifications, and transmits it to configured receivers.
-3. **IBM Verify SaaS (Receiver)**: Receives and validates the SSF event stream as a subscriber receiver.
-4. **Playbook Execution**: IBM Verify SaaS evaluates incoming signals and triggers automated remediation playbooks (e.g., revoking sessions, enforcing MFA, or resetting credentials).
+2. **IBM Verify Antenna (Transmitter)**: Ingests the raw security event, formats it into standard Security Event Tokens (SETs) per SSF specifications, and transmits it to configured receivers.
+3. **IBM Verify SaaS (Receiver)**: Receives and validates the SSF event as a receiver.
+4. **Playbook Execution**: IBM Verify SaaS evaluates incoming events and triggers automated remediation playbooks (e.g. revoking sessions, suspending agents).
 
 ---
 
