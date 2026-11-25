@@ -1,6 +1,6 @@
-# IBM Verify SaaS — Antenna Receiver Setup
+# Built-in SSF Receiver and Playbook configurations
 
-Before the Antenna Receiver in IBM Verify SaaS can act on the NHI events emitted by this simulator, the custom **event types** and their associated **playbooks** must be configured in the Verify SaaS tenant.
+Before the SSF Receiver in IBM Verify SaaS can act on the agent events emitted by this simulator, the custom **event types** and their associated **playbooks** must be configured in the Verify SaaS tenant.
 
 All required configuration files are located under [`verify-saas-configs/`](../verify-saas-configs/).
 

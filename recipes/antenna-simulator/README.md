@@ -1,14 +1,14 @@
-# Antenna Simulator
+# Security Events Simulator for OpenID SSF
 
-A modern React and Vite-based interactive simulation and visualization dashboard for **IBM Verify Antenna**.
+A React and Vite-based interactive simulation and visualization dashboard for Antenna/Shared Signals feature in IBM Verify, as well as in IBM Agent Identity.
 
-This UI allows developers and security engineers to simulate Shared Signals and Events (SSF / CAEP / RISC / NHI), inspect data flow through the Antenna Transmitter pipeline, preview SSF Security Event Tokens (SETs), and monitor real-time event streams.
+This UI allows developers and security engineers to simulate Shared Signals events, inspect data flow through the Antenna Transmitter pipeline, preview SSF Security Event Tokens (SETs), and monitor real-time event streams.
 
 ---
 
 ## 🚀 Features
 
-- **Security & NHI Event Simulator**: Generate and trigger standard SSF/CAEP security events and Non-Human Identity (AI Agent) governance events (Credential Compromised, Anomalous Access, Geo-Anomaly, Unregistered Agent, Agent Invalid Owner).
+- **Security Events Simulator**: Generate and trigger standard SSF/CAEP security events and agent events (Credential Compromised, Anomalous Access, Geo-Anomaly, Unregistered Agent, Agent Invalid Owner).
 - **Pipeline Visualizer**: Real-time visual representation of data movement across Transmitter sources, datastores (Kafka), and event receivers.
 - **SSF Payload Preview**: Live preview and validation of generated JWT/SSF security event tokens before emitting.
 - **Live Event Stream**: Real-time feed of ingested and dispatched events.
@@ -24,28 +24,28 @@ This UI allows developers and security engineers to simulate Shared Signals and 
 
 ---
 
-## 🔧 Transmitter Backend Setup (Delta Guide)
+## 🔧 Risk detection tool Setup with SSF Transmitter (Delta Guide)
 
-Before launching the Antenna Simulator UI, configure and start the IBM Verify Antenna Transmitter backend with the required NHI event types and VIP event mapper:
+Before launching the Simulator UI, configure and start the IBM Verify Antenna Transmitter backend with the required agent event types and VIP event mapper:
 
-👉 [**Transmitter Setup & Delta Guide (Threat Detection & NHI)**](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md)
+👉 [**Risk detection tool Setup with SSF Transmitter**](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md)
 
 ### Key Setup Steps:
 1. **Base Transmitter Setup**: Follow the official [IBM Verify Antenna VIP Transmitter Setup Guide](../vip/transmitter/README.md).
 2. **Apply Delta Configurations**:
    - Replace `vip_event_mapper.js` in your recipes directory with [`transmitter-configs/vip_event_mapper.js`](transmitter-configs/vip_event_mapper.js).
-   - Update `transmitter.yml` using the template at [`transmitter-configs/transmitter.yml`](transmitter-configs/transmitter.yml) to add the custom NHI `event_types` and `vip` ingester source.
+   - Update `transmitter.yml` using the template at [`transmitter-configs/transmitter.yml`](transmitter-configs/transmitter.yml) to add the custom agent `event_types` and `vip` ingester source.
    - Update `docker-compose.yml` to enable file logging to `./logs/transmitter.log`.
 3. **Restart Transmitter**: `docker compose down && docker compose up -d`.
 4. **Expose via Ngrok** (if integrating with external SaaS / IBM Verify): `ngrok http https://localhost:9044 --host-header="localhost:9044"`.
 
 ---
 
-## 🔔 IBM Verify SaaS Antenna Receiver Configuration
+## 🔔 Built-in SSF Receiver and Playbook configurations
 
-Before the Antenna Receiver in IBM Verify SaaS can act on NHI events emitted by this simulator, the custom event types and their associated playbooks must be imported and configured in the Verify SaaS tenant.
+Before the SSF Receiver in IBM Verify SaaS can act on agent events emitted by this simulator, the custom event types and their associated playbooks must be imported and configured in the Verify SaaS tenant.
 
-👉 [**Verify SaaS Antenna Receiver Setup Guide**](docs/VERIFY_SAAS_RECEIVER_SETUP.md)
+👉 [**Built-in SSF Receiver and Playbook configurations**](docs/VERIFY_SAAS_RECEIVER_SETUP.md)
 
 ### Quick Reference
 
@@ -86,7 +86,7 @@ The development server includes a built-in proxy in [`vite.config.js`](vite.conf
 
 - `/sources/*` $\rightarrow$ Proxied to Antenna Transmitter (`https://localhost:9044` by default, or your Ngrok URL) with SSL verification bypassed for self-signed certificates.
 
-To point the UI to an Ngrok tunnel or remote URL, see [Connecting Antenna Simulator UI to Transmitter](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md#5-connecting-antenna-simulator-ui-to-transmitter).
+To point the UI to an Ngrok tunnel or remote URL, see [Connecting Simulator UI to Transmitter](docs/TRANSMITTER_SETUP_DELTA_GUIDE.md#5-connecting-antenna-simulator-ui-to-transmitter).
 
 ---
 
