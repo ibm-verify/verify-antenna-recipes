@@ -1,0 +1,49 @@
+---
+version: 26.03
+
+logging:
+  level: debug
+
+transmitter:
+  server:
+    ssl:
+      key: "ks:server/key"
+      certificate: "ks:server/cert"
+  base_url: "${NGROK_URL}"
+  issuer: "${NGROK_URL}"
+  default_subjects: ALL
+  event_types:
+    - "urn:ietf:params:scim:event:prov:patch:full"
+    - "urn:ietf:params:scim:event:prov:create:full"
+  one_stream_per_receiver: true
+  runtime:
+    enabled: true
+    jwks:
+      signing_keystore: jwks_keys
+      default_signing_key: jwtsigner
+    sign_poll_set: true
+    max_ssf_event_worker: 1
+    max_set_push_worker: 1
+    wait_ssf_event_timeout: 5s
+    request_timeout: 20
+  ingester:
+    enabled: true
+    worker_threads: 1
+    sources:
+      - id: push_src_1
+        type: http_push
+        transform_rule:
+          type: javascript
+          content: "@js/verify_agent_registry_mapper.js"
+
+javascript:
+  timeout: 30
+  max_concurrent_jobs: 16
+  max_ctx_pre_isolate: 50
+
+authorization_schemes:
+  - spec_urn: "urn:ietf:rfc:6749"
+    client_id: "${VERIFY_CLIENT_ID}"
+    client_secret: "${VERIFY_CLIENT_SECRET}"
+    client_authentication_method: "client_secret_post"
+    discovery_uri: "https://${VERIFY_TENANT_HOST}/oauth2/.well-known/openid-configuration"

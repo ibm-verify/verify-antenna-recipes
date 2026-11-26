@@ -1,0 +1,34 @@
+services:
+  antenna-receiver:
+    image: icr.io/ibm-verify/ibm-verify-antenna-receiver:26.03.0
+    container_name: ${RX_CONTAINER}
+    hostname: antenna-receiver
+    ports:
+      - "${RX_PORT}:9043"
+    volumes:
+      - ./deploying/receiver/configs:/configs:ro
+      - ./db-rx:/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - antenna-net
+
+  antenna-transmitter:
+    image: icr.io/ibm-verify/ibm-verify-antenna-transmitter:26.03.0
+    container_name: ${TX_CONTAINER}
+    hostname: antenna-transmitter
+    ports:
+      - "${TX_PORT}:9044"
+    volumes:
+      - ./deploying/transmitter/configs:/configs:ro
+      - ./db-tx:/db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - antenna-receiver
+    networks:
+      - antenna-net
+
+networks:
+  antenna-net:
+    driver: bridge
